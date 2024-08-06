@@ -1,5 +1,6 @@
 package com.apptware.interview.serialization;
 
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -22,7 +23,7 @@ class AdultTest {
     Assertions.assertThatThrownBy(() -> new Adult("Firstname", "Lastname", 17))
         .isInstanceOf(IllegalArgumentException.class)
     // Changes expected ----->
-        .hasMessage("Firstname or Lastname CANNOT be blank.");
+        .hasMessage("Inappropriate Age for an Adult.");
     // <----- Changes expected
 
     String json1 =
@@ -50,8 +51,8 @@ class AdultTest {
               System.out.println(adult);
             })
     // Changes expected ----->
-        .isInstanceOf(IllegalArgumentException.class)
-        .hasMessage("Firstname or Lastname CANNOT be blank.");
+        .isInstanceOf(JsonMappingException.class)
+        .hasMessageContaining("Firstname or Lastname CANNOT be blank.");
     // <----- Changes expected
     Assertions.assertThatThrownBy(
             () -> {
@@ -59,8 +60,8 @@ class AdultTest {
               System.out.println(adult);
             })
     // Changes expected ----->
-        .isInstanceOf(IllegalArgumentException.class)
-        .hasMessage("Inappropriate Age for an Adult.");
+        .isInstanceOf(JsonMappingException.class)
+        .hasMessageContaining("Inappropriate Age for an Adult.");
     // <----- Changes expected
   }
 }
